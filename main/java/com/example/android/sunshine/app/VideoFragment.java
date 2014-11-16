@@ -15,9 +15,11 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,19 +81,41 @@ public class VideoFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void updateVideos() {
+        FetchVideoTask myFetchVideoTask = new FetchVideoTask();
+//       myFetchWeatherTask.execute("10003"); this hardcodes a string instead of getting it from preferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //the second argument allows for a default location if the user hasn't set one
+//        String location = prefs.getString(getString(R.string.pref_location_key),  getString(R.string.pref_location_default));
+//        myFetchVideoTask.execute(location);
+        myFetchVideoTask.execute();
+    }
+
+    //happens every time the fragment starts
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateVideos();
+    }
+
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         String[] data = {
-                "Please hit refresh in the menu to fill with values",
-                "placeholder1",
-                "placeholder2",
-                "placeholder3",
-                "placeholder4",
-                "placeholder5",
-                "placeholder6",
+                "Welcome! Loading your videos"
+//                "placeholder1",
+//                "placeholder2",
+//                "placeholder3",
+//                "placeholder4",
+//                "placeholder5",
+//                "placeholder6",
         };
         List<String> videoresponses = new ArrayList<String>(Arrays.asList(data));
 
