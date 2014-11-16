@@ -219,27 +219,24 @@ public class VideoFragment extends Fragment {
             for(int i = 0; i < weatherArray.length(); i++) {
 
                 String thumbnail;
+                JSONObject likesObject;
+                JSONArray records;
 
 
-                // Get the JSON object representing all the records. should be about 10
+                // Get the JSON object representing all the records
                 JSONArray dayForecast = weatherArray.getJSONArray("records");
 
-                JSONObject stringVersionOfArray = dayForecast.toJSONObject(dayForecast);
 
-                if (stringVersionOfArray.has("videoUrl")) {
-                    JSONObject thumbnails = stringVersionOfArray.getJSONObject("videoUrl");
-                    thumbnail = thumbnails.getString("videoUrl");
-                    resultStrs.set(i, thumbnail);
+                //now we iterate over that string, looking for 'likes' objects
+                for (int j = 0; j < dayForecast.length(); j ++) {
+                    likesObject = dayForecast.getJSONObject(j);
+                   for (int k = 0; k < likesObject.length(); k ++) {
+                       resultStrs.add(likesObject.getString("thumbnailUrl"));
+
+
+
+                   }
                 }
-                else {
-                    Log.v(LOG_TAG, "don't have thumbnails" + stringVersionOfArray.keys().toString());
-                }
-
-//                JSONObject thumbnails = dayForecast.getJSONObject("thumbnailUrl");
-
-
-
-
 
             }
             for (int i = 0; i <resultStrs.size(); i++) {
