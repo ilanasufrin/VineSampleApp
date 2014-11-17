@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -28,8 +29,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +78,7 @@ public class VideoFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchVideoTask myFetchVideoTask = new FetchVideoTask();
-            myFetchVideoTask.execute("10003");
+            myFetchVideoTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -99,23 +102,15 @@ public class VideoFragment extends Fragment {
         updateVideos();
     }
 
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        final String LOG_TAG = FetchVideoTask.class.getSimpleName();
+
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         String[] data = {
                 "Welcome! Loading your videos"
-//                "placeholder1",
-//                "placeholder2",
-//                "placeholder3",
-//                "placeholder4",
-//                "placeholder5",
-//                "placeholder6",
         };
         List<String> videoresponses = new ArrayList<String>(Arrays.asList(data));
 
@@ -129,10 +124,28 @@ public class VideoFragment extends Fragment {
                         videoresponses);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        Log.v(LOG_TAG, "view has been inflated");
 
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_video);
         listView.setAdapter(videoAdapter);
+        Log.v(LOG_TAG, "the adapter has been set");
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            //this is where we're creating the detailed list item views
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                String forecast = videoAdapter.getItem(position);
+                String toastMessage = new String("taking you to the video");
+                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(myIntent);
+
+            }
+
+        });
 
         return rootView;
     }
@@ -218,10 +231,6 @@ public class VideoFragment extends Fragment {
             return null;
         }
 
-
-
-
-
         /**
          * Take the String representing the complete results in JSON Format and
          * pull out the data we need to construct the Strings needed for the wireframes.
@@ -256,9 +265,6 @@ public class VideoFragment extends Fragment {
                     likesObject = dayForecast.getJSONObject(j);
                    for (int k = 0; k < likesObject.length(); k ++) {
                        resultStrs.add(likesObject.getString("thumbnailUrl"));
-
-
-
                    }
                 }
 
