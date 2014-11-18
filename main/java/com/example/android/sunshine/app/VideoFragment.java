@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * Encapsulates fetching the forecast and displaying it as a {@link ListView} layout.
  */
@@ -129,14 +130,24 @@ public class VideoFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_video);
         listView.setAdapter(videoAdapter);
-        Log.v(LOG_TAG, "the adapter has been set");
+
+
+
+//        ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+        // Picasso.with(getActivity()).load(forecast).into(imageView);
+//        Picasso.with(imageView.getContext()).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             //this is where we're creating the detailed list item views
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+
                 String forecast = videoAdapter.getItem(position);
+//
                 String toastMessage = new String("taking you to the video");
                 Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(getActivity(), DetailActivity.class)
@@ -263,9 +274,16 @@ public class VideoFragment extends Fragment {
                 //now we iterate over that string, looking for 'likes' objects
                 for (int j = 0; j < dayForecast.length(); j ++) {
                     likesObject = dayForecast.getJSONObject(j);
-                   for (int k = 0; k < likesObject.length(); k ++) {
-                       resultStrs.add(likesObject.getString("thumbnailUrl"));
-                   }
+//                    resultStrs.add(likesObject.getString("thumbnailUrl"));
+//
+
+
+                    resultStrs.add(likesObject.getString("thumbnailUrl") + " posted by " + likesObject.getString("username"));
+
+//                   for (int k = 0; k < likesObject.length(); k ++) {
+////                       resultStrs.add(likesObject.getString("thumbnailUrl"));
+////                       resultStrs.add(likesObject.getString("username"));
+//                   }
                 }
 
             }
@@ -283,6 +301,7 @@ public class VideoFragment extends Fragment {
             if (result != null) {
                 videoAdapter.clear();
                 for (String dayForecastString : result) {
+
                     videoAdapter.add(dayForecastString);
                 }
             }
@@ -290,4 +309,7 @@ public class VideoFragment extends Fragment {
 
 
     }
+
+
+
 }
