@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -31,8 +32,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +59,7 @@ import java.util.List;
  */
 public class VideoFragment extends Fragment {
 
-    private ArrayAdapter<String> videoAdapter;
+    private VideoAdapter videoAdapter;
 
     public VideoFragment() {
     }
@@ -118,11 +123,11 @@ public class VideoFragment extends Fragment {
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
-        videoAdapter = new ArrayAdapter<String>(
+        videoAdapter = new VideoAdapter(
                         getActivity(), // The current context (this activity)
-                        R.layout.list_item_video, // The name of the layout ID.
-                        R.id.list_item_video_textview, // The ID of the textview to populate.
-                        videoresponses);
+                        R.layout.list_item_video);
+
+        videoAdapter.add("http://i.imgur.com/DvpvklR.png");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.v(LOG_TAG, "view has been inflated");
@@ -157,6 +162,8 @@ public class VideoFragment extends Fragment {
             }
 
         });
+
+        updateVideos();
 
         return rootView;
     }
@@ -304,10 +311,38 @@ public class VideoFragment extends Fragment {
 
                     videoAdapter.add(dayForecastString);
                 }
+                videoAdapter.notifyDataSetChanged();
             }
         }
 
 
+    }
+
+    private class VideoAdapter extends ArrayAdapter<String> {
+
+        //can later change to type object
+
+        public VideoAdapter(Context context, int resource ) {
+            super(context, resource);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            String videothumbnailstring = getItem(position);
+            View rowView = inflater.inflate(R.layout.list_item_video, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.list_item_video_textview);
+            textView.setText(videothumbnailstring);
+
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+
+
+            Picasso.with(getActivity()).load(getItem(position)).into(imageView);
+//        Picasso.with(imageView.getContext()).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+
+            return rowView;
+        }
     }
 
 
