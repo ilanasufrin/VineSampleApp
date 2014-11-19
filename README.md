@@ -10,7 +10,7 @@ VineSampleApp
 
 ##### Still to do:
 - make listview prettier
-- sned video to video detail page
+- send video to video detail page
 - Autoplay video on video detail page
 - styles
 - user preferences (optional)
