@@ -150,7 +150,7 @@ public class VideoFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
 
-                String forecast = videoAdapter.getItem(position).getmName();
+                String forecast = videoAdapter.getItem(position).getmVideoUrl();
 //
 //                String toastMessage = new String("taking you to the video");
 //                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
@@ -288,7 +288,7 @@ public class VideoFragment extends Fragment {
                     //there only seem to be about 10 unique results
 //                    resultStrs.add(likesObject.getString("thumbnailUrl") + " posted by " + likesObject.getString("username"));
 
-                    VideoObject myVideoObject = new VideoObject(likesObject.getString("thumbnailUrl"), likesObject.getString("username"));
+                    VideoObject myVideoObject = new VideoObject(likesObject.getString("thumbnailUrl"), likesObject.getString("username"), likesObject.getString("videoLowURL"));
                     resultStrs.add(myVideoObject);
 
 //                   for (int k = 0; k < likesObject.length(); k ++) {
@@ -337,7 +337,7 @@ public class VideoFragment extends Fragment {
             VideoObject videothumbnailstring = getItem(position);
             View rowView = inflater.inflate(R.layout.list_item_video, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.list_item_video_textview);
-            textView.setText(videothumbnailstring.getmName());
+            textView.setText("Posted by " + videothumbnailstring.getmName());
 
             ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
 

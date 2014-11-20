@@ -6,6 +6,15 @@ package com.example.android.sunshine.app;
 public class VideoObject { // implements Parcelable {
     private String mThumbnailUrl;
     private String mName;
+    private String mVideoUrl;
+
+
+    public VideoObject(String mThumbnailUrl, String mName, String mVideoUrl) {
+        this.mThumbnailUrl = mThumbnailUrl;
+        this.mName = mName;
+        this.mVideoUrl = mVideoUrl;
+    }
+
 
     public String getmVideoUrl() {
         return mVideoUrl;
@@ -15,12 +24,7 @@ public class VideoObject { // implements Parcelable {
         this.mVideoUrl = mVideoUrl;
     }
 
-    private String mVideoUrl;
 
-    public VideoObject(String mThumbnailUrl, String mName) {
-        this.mThumbnailUrl = mThumbnailUrl;
-        this.mName = mName;
-    }
 
     public String getmThumbnailUrl() {
         return mThumbnailUrl;
