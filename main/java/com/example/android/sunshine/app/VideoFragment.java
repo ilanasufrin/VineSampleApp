@@ -35,7 +35,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -127,7 +126,7 @@ public class VideoFragment extends Fragment {
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_video);
 
-        videoAdapter.add("http://i.imgur.com/DvpvklR.png");
+//        videoAdapter.add("http://i.imgur.com/DvpvklR.png");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         Log.v(LOG_TAG, "view has been inflated");
@@ -151,10 +150,11 @@ public class VideoFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
 
-                String forecast = videoAdapter.getItem(position);
+                String forecast = videoAdapter.getItem(position).getmName();
 //
-                String toastMessage = new String("taking you to the video");
-                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+//                String toastMessage = new String("taking you to the video");
+//                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+
                 Intent myIntent = new Intent(getActivity(), DetailActivity.class)
                         .putExtra(Intent.EXTRA_TEXT, forecast);
                 startActivity(myIntent);
@@ -168,12 +168,12 @@ public class VideoFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchVideoTask extends AsyncTask<String, Void, ArrayList<String>> {
+    public class FetchVideoTask extends AsyncTask<String, Void, ArrayList<VideoObject>> {
 
         private final String LOG_TAG = FetchVideoTask.class.getSimpleName();
 
         @Override
-        protected ArrayList<String> doInBackground(String... params) {
+        protected ArrayList<VideoObject> doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -256,7 +256,7 @@ public class VideoFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private ArrayList<String>  getVideoDataFromJson(String forecastJsonStr)
+        private ArrayList<VideoObject>  getVideoDataFromJson(String forecastJsonStr)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
@@ -266,7 +266,8 @@ public class VideoFragment extends Fragment {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONObject weatherArray = forecastJson.getJSONObject(OWM_DATA);
 
-            ArrayList<String> resultStrs = new ArrayList<String>();
+            //we know can pass in string. but what about objects?
+            ArrayList<VideoObject> resultStrs = new ArrayList<VideoObject>();
             for(int i = 0; i < weatherArray.length(); i++) {
 
                 String thumbnail;
@@ -281,11 +282,14 @@ public class VideoFragment extends Fragment {
                 //now we iterate over that string, looking for 'likes' objects
                 for (int j = 0; j < dayForecast.length(); j ++) {
                     likesObject = dayForecast.getJSONObject(j);
-//                    resultStrs.add(likesObject.getString("thumbnailUrl"));
+
 //
 
+                    //there only seem to be about 10 unique results
+//                    resultStrs.add(likesObject.getString("thumbnailUrl") + " posted by " + likesObject.getString("username"));
 
-                    resultStrs.add(likesObject.getString("thumbnailUrl") + " posted by " + likesObject.getString("username"));
+                    VideoObject myVideoObject = new VideoObject(likesObject.getString("thumbnailUrl"), likesObject.getString("username"));
+                    resultStrs.add(myVideoObject);
 
 //                   for (int k = 0; k < likesObject.length(); k ++) {
 ////                       resultStrs.add(likesObject.getString("thumbnailUrl"));
@@ -304,10 +308,10 @@ public class VideoFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result) {
+        protected void onPostExecute(ArrayList<VideoObject> result) {
             if (result != null) {
                 videoAdapter.clear();
-                for (String dayForecastString : result) {
+                for (VideoObject dayForecastString : result) {
 
                     videoAdapter.add(dayForecastString);
                 }
@@ -318,7 +322,7 @@ public class VideoFragment extends Fragment {
 
     }
 
-    private class VideoAdapter extends ArrayAdapter<String> {
+    private class VideoAdapter extends ArrayAdapter<VideoObject> {
 
         //can later change to type object
 
@@ -330,15 +334,15 @@ public class VideoFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            String videothumbnailstring = getItem(position);
+            VideoObject videothumbnailstring = getItem(position);
             View rowView = inflater.inflate(R.layout.list_item_video, parent, false);
             TextView textView = (TextView) rowView.findViewById(R.id.list_item_video_textview);
-            textView.setText(videothumbnailstring);
+            textView.setText(videothumbnailstring.getmName());
 
             ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
 
 
-            Picasso.with(getActivity()).load(getItem(position)).into(imageView);
+            Picasso.with(getActivity()).load(videothumbnailstring.getmThumbnailUrl()).resize(200, 200).centerCrop().into(imageView);
 //        Picasso.with(imageView.getContext()).load("http://i.imgur.com/DvpvklR.png").into(imageView);
 
             return rowView;
