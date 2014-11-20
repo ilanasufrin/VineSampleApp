@@ -1,13 +1,17 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.VideoView;
+
+import java.io.IOException;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -21,6 +25,8 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new DetailFragment())
                     .commit();
         }
+
+
     }
 
 
@@ -64,13 +70,38 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.video_detail, container, false);
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
                 String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(forecastStr);
+                ((VideoView) rootView.findViewById(R.id.detail_text))
+                        .setVideoPath(forecastStr);
+                //just a guess that the above line is correct
+                // }
+
+
+                String url = forecastStr; // your URL here
+                Log.v(LOG_TAG, "url for video:" + url);
+                MediaPlayer mediaPlayer = new MediaPlayer();
+
+//                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                try {
+                    mediaPlayer.setDataSource(url);
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "cannot find url for videos");
+                }
+                try {
+                    mediaPlayer.prepare(); // might take long! (for buffering, etc)
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "taking too long to play videos");
+                }
+                Log.v(LOG_TAG, "about to start media player");
+                mediaPlayer.start();
+
+            }
+                return rootView;
             }
 
 
-
-            return rootView;
-        }
     }
+
+
+
+
 }

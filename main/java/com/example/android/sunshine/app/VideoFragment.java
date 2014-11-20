@@ -151,7 +151,8 @@ public class VideoFragment extends Fragment {
 
 
                 String forecast = videoAdapter.getItem(position).getmVideoUrl();
-//
+
+
 //                String toastMessage = new String("taking you to the video");
 //                Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT).show();
 
