@@ -16,8 +16,7 @@ ListView:
 
 DetailView:
 
-![](https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_detail_view_phone.png)
-<img src="https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_detail_view_phone.png" align="left" height="760" width="464" >
+<img src="https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_detail_view_phone.png" height="760" width="464" >
 
 The [screenshots folder](https://github.com/ilanasufrin/VineSampleApp/tree/master/main/screenshots) shows what the app looked like at virtually every stage of development.
 
