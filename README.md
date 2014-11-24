@@ -1,7 +1,7 @@
 VineSampleApp
 =============
 
-### This app hits the Vine API to get all videos from a particuler user's timeline. It does this by performing the following tasks:
+### This app hits the Vine API to get all videos from a particular user's timeline. It does this by performing the following tasks:
 - Parses and maintains the following API call: https://vine.co/api/timelines/users/918753190470619136
 - Create a ListView using the data from the above call, showing the thumbnail and relevant metadata
 - Create a Video Detail View that is activated on clicking the individual table cell that autoplays the “videoURL" for the item selected
