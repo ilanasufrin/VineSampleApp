@@ -12,11 +12,11 @@ The app uses the [Picasso library](http://square.github.io/picasso/) to render t
 
 ListView:
 
--!(https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_object_listview.png)
+!(https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_object_listview.png)
 
 DetailView:
 
--!(https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_detail_view_phone.png)
+!(https://github.com/ilanasufrin/VineSampleApp/blob/master/main/screenshots/video_detail_view_phone.png)
 
 The [screenshots folder](https://github.com/ilanasufrin/VineSampleApp/tree/master/main/screenshots) shows what the app looked like at virtually every stage of development.
 
