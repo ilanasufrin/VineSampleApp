@@ -8,9 +8,8 @@ VineSampleApp
 - Make each list item clickable, will take you to a list item view
 - shows thumbnails in listview (uses Picasso library)
 - send video to video detail page
+- Autoplay video on video detail page (this only works when viewing on real device, not an emulator)
 
 ##### Still to do:
-
-- Autoplay video on video detail page
-- styles
+- styles (optional)
 - user preferences (optional)
